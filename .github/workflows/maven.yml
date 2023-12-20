@@ -34,14 +34,14 @@ jobs:
         extension=$( [ "${{ runner.os }}" == "Windows" ] && echo "zip" || echo "tar.gz" )
         version_part=$( [ "${{ matrix.java }}" == "21" ] && echo "21.0.1" || echo "17.0.9" )
         download_url="https://github.com/SAP/SapMachine/releases/download/sapmachine-${version_part}/sapmachine-jdk-${version_part}_${os_part}-x64_bin.${extension}"
-        wget -O $RUNNER_TEMP/java_package.$extension $download_url
+        curl -L -o $RUNNER_TEMP/java_package.$extension $download_url
       shell: bash
 
     - name: Set up JDK Java ${{ matrix.java }} (${{ matrix.distribution }}) on ${{ matrix.os }}
       uses: actions/setup-java@v4
       with:
         distribution: ${{ matrix.distribution == 'sapmachine' && 'jdkfile' || matrix.distribution }}
-        jdkFile: ${{ matrix.distribution == 'sapmachine' && format('{0}/java_package.zip', runner.temp) || '' }}
+        jdkFile: ${{ matrix.distribution == 'sapmachine' && format('{0}/java_package.{1}', runner.temp, matrix.os == 'Windows' && 'zip' || 'tar.gz') }}
         java-version: ${{ matrix.java }}
         architecture: x64
         cache: maven
