@@ -27,15 +27,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Download SAP Machine JDK if necessary
+    - name: Download SAP Machine JDK when necessary
       if: matrix.distribution == 'sapmachine'
       run: |
-        if [ "${{ matrix.java }}" == "21" ]; then
-          download_url="https://github.com/SAP/SapMachine/releases/download/sapmachine-21.0.1/sapmachine-jdk-21.0.1_windows-x64_bin.zip"
-        elif [ "${{ matrix.java }}" == "17" ]; then
-          download_url="https://github.com/SAP/SapMachine/releases/download/sapmachine-17.0.9/sapmachine-jdk-17.0.9_windows-x64_bin.zip"
-        fi
-        wget -O $RUNNER_TEMP/java_package.zip $download_url
+        os_part=$( [ "${{ runner.os }}" == "Windows" ] && echo "windows" || echo "linux" )
+        extension=$( [ "${{ runner.os }}" == "Windows" ] && echo "zip" || echo "tar.gz" )
+        version_part=$( [ "${{ matrix.java }}" == "21" ] && echo "21.0.1" || echo "17.0.9" )
+        download_url="https://github.com/SAP/SapMachine/releases/download/sapmachine-${version_part}/sapmachine-jdk-${version_part}_${os_part}-x64_bin.${extension}"
+        wget -O $RUNNER_TEMP/java_package.$extension $download_url
+      shell: bash
 
     - name: Set up JDK Java ${{ matrix.java }} (${{ matrix.distribution }}) on ${{ matrix.os }}
       uses: actions/setup-java@v4
