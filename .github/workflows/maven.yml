@@ -35,8 +35,7 @@ jobs:
         version_part=$( [ "${{ matrix.java }}" == "21" ] && echo "21.0.1" || echo "17.0.9" )
         download_url="https://github.com/SAP/SapMachine/releases/download/sapmachine-${version_part}/sapmachine-jdk-${version_part}_${os_part}-x64_bin.${extension}"
         curl -L -o $RUNNER_TEMP/java_package.$extension $download_url
-        echo "Downloaded files in $RUNNER_TEMP:"
-        ls -l $RUNNER_TEMP
+        echo "Downloaded $download_url in $RUNNER_TEMP"
       shell: bash
     
     - name: Set up JDK Java ${{ matrix.java }} (${{ matrix.distribution }}) on ${{ matrix.os }}
