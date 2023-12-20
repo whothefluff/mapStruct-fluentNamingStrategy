@@ -27,7 +27,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Download SAP Machine JDK when necessary
+    - name: Download SAP Machine JDK when necessary # sapmachine still not a supported distribution https://github.com/actions/setup-java?tab=readme-ov-file#supported-version-syntax but we can download the package and use it as a jdkfile
       if: matrix.distribution == 'sapmachine'
       run: |
         os_part=$( [ "${{ runner.os }}" == "Windows" ] && echo "windows" || echo "linux" )
