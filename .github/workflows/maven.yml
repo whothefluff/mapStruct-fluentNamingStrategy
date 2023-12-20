@@ -42,7 +42,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: ${{ matrix.distribution == 'sapmachine' && 'jdkfile' || matrix.distribution }}
-        jdkFile: ${{ matrix.distribution == 'sapmachine' && format('{0}/java_package.{1}', runner.temp, matrix.os == 'Windows' && 'zip' || 'tar.gz') }}
+        jdkFile: ${{ matrix.distribution == 'sapmachine' && format('{0}/java_package.{1}', runner.temp, matrix.os == 'windows-latest' && 'zip' || 'tar.gz') }}
         java-version: ${{ matrix.java }}
         architecture: x64
         cache: maven  
